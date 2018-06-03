@@ -23,7 +23,7 @@ func New(w io.Writer) *DebugLogger {
 	return dlogger
 }
 
-// Fprintf print log with format if DEBUG env specified.
+// Printf print log with format if DEBUG env specified.
 func (dlogger *DebugLogger) Printf(format string, a ...interface{}) (n int, err error) {
 	if dlogger.debug {
 		return fmt.Fprintf(dlogger.w, format, a...)
@@ -32,7 +32,7 @@ func (dlogger *DebugLogger) Printf(format string, a ...interface{}) (n int, err 
 	return 0, nil
 }
 
-// Fprintf print log if DEBUG env specified.
+// Print print log if DEBUG env specified.
 func (dlogger *DebugLogger) Print(a ...interface{}) (n int, err error) {
 	if dlogger.debug {
 		return fmt.Fprint(dlogger.w, a...)
