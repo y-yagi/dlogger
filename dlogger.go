@@ -10,11 +10,12 @@ import (
 type DebugLogger struct {
 	w     io.Writer
 	debug bool
+	tag   string
 }
 
 // New creates a new Debug Logger.
 func New(w io.Writer) *DebugLogger {
-	dlogger := &DebugLogger{w: w}
+	dlogger := &DebugLogger{w: w, tag: "[DEBUG] "}
 
 	if len(os.Getenv("DEBUG")) != 0 {
 		dlogger.debug = true
@@ -26,7 +27,7 @@ func New(w io.Writer) *DebugLogger {
 // Printf print log with format if DEBUG env specified.
 func (dlogger *DebugLogger) Printf(format string, a ...interface{}) (n int, err error) {
 	if dlogger.debug {
-		return fmt.Fprintf(dlogger.w, format, a...)
+		return fmt.Fprintf(dlogger.w, dlogger.tag+format, a...)
 	}
 
 	return 0, nil
@@ -35,6 +36,7 @@ func (dlogger *DebugLogger) Printf(format string, a ...interface{}) (n int, err 
 // Print print log if DEBUG env specified.
 func (dlogger *DebugLogger) Print(a ...interface{}) (n int, err error) {
 	if dlogger.debug {
+		a = append([]interface{}{dlogger.tag}, a...)
 		return fmt.Fprint(dlogger.w, a...)
 	}
 
